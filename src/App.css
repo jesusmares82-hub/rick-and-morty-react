@@ -1,38 +1,53 @@
 .App {
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background-image: url("./img/pexels-henry-&-co-2341290.jpg");
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.hero-image svg {
+  margin-top: 5px;
+  width: 20%;
+  height: 20%;
+  fill: rgb(245, 138, 138);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.hero {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  -webkit-box-pack: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  -webkit-box-align: center;
+  align-items: center;
+  flex-direction: column;
+  height: calc(50vh - 60px);
+  text-align: center;
+  position: relative;
 }
 
-.App-link {
-  color: #61dafb;
+.hero-title {
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  flex-direction: column;
+  height: calc(50vh - 60px);
+  text-align: center;
+  position: relative;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 48px 0 rgb(0 0 0 / 20%);
+  font-family: Hind, sans-serif;
+  height: 64px;
+  padding: 4px 48px 0 64px;
+}
+
+.mybutton {
+  padding: 0 1rem 0 2rem;
+  height: 64px;
+  border-radius: 8px;
+  box-shadow: 0 4px 48px 0 rgb(0 0 0 / 20%);
 }
