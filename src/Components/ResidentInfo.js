@@ -1,19 +1,20 @@
 import React from "react";
+import Card from "react-bootstrap/Card";
 
-const ResidentInfo = (
-  nameResident,
-  imageResident,
-  statusResident,
-  originResident,
-  episodeResident
-) => {
+const ResidentInfo = (name, origin, image, status, episodes) => {
+  console.log(name);
   return (
     <>
-      <h2>{nameResident}</h2>
-      <img src={imageResident} alt={nameResident} />
-      <h4>Status: {statusResident}</h4>
-      <h4>Origin: {originResident}</h4>
-      <h4>Episodes: {episodeResident}</h4>
+      <Card style={{ width: "18rem" }}>
+        <Card.Img variant="top" src={image} />
+        <Card.Body>
+          <Card.Title>{name}</Card.Title>
+          <Card.Text>
+            Status: {status} Origin: {origin} Episodes:
+            {episodes}
+          </Card.Text>
+        </Card.Body>
+      </Card>
     </>
   );
 };
