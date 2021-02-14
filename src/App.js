@@ -140,13 +140,13 @@ function App() {
       <SearchBox handleSearchTerm={handleSearch} />
       {hasData && (
         <>
-          <ResidentContainer residents={residents} query={query} />
           <LocationInfo
             key={name}
             name={name}
             type={type}
             dimension={dimension}
           />
+          <ResidentContainer residents={residents} query={query} />
         </>
       )}
     </div>
