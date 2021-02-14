@@ -1,14 +1,15 @@
 import Title from "./Components/Title";
 import { LocationContainer } from "./Components/LocationContainer";
 import { useState, useEffect } from "react";
+import Logo from "./Components/Logo";
 import Card from "react-bootstrap/Card";
-import axios from "axios";
 import "./App.css";
+import axios from "axios";
 let characteresTemp = [];
 let myArrOfCharacter = [];
 
 const LocationInfo = ({ name, type, dimension }) => {
-  console.log(name);
+  //console.log(name);
   return (
     <div className="hero">
       <h1>{name}</h1>
@@ -19,20 +20,19 @@ const LocationInfo = ({ name, type, dimension }) => {
 };
 
 const ResidentContainer = ({ residents, query }) => {
-  console.log(residents.length);
-  console.log(query);
+  //console.log(residents);
   const [characteres, setCharacteres] = useState([]);
+  const responseOne = "";
 
   useEffect(() => {
     if (residents.length > 0) {
-      console.log("entro al if residents");
       for (let i = 0; i < residents.length; i++) {
-        if (i > 9) {
+        if (i >= 10) {
           break;
         }
         console.log("entro al for" + i);
         axios.get(`${residents[i]}`).then((res) => {
-          console.log(res.data);
+          //console.log(res.data.name);
           //setCharacteres(res.data);
           characteresTemp.push(res.data);
         });
@@ -53,13 +53,9 @@ const ResidentContainer = ({ residents, query }) => {
         />
       ));
     }
+  }, [query]);
 
-    if (characteres.length > 0) {
-      console.log(characteres);
-    }
-  }, [/*residents.length*/ query]);
-
-  return <div>{characteresTemp && myArrOfCharacter}</div>;
+  return <div>{characteres && myArrOfCharacter}</div>;
 };
 
 const ResidentInfo = ({ name, image, status, origin, episode }) => {
@@ -67,9 +63,9 @@ const ResidentInfo = ({ name, image, status, origin, episode }) => {
     <>
       <div className="gallery">
         <Card style={{ width: "15rem" }}>
-          <Card.Img variant="top" src={image} />
+          {<Card.Img variant="top" src={image} />}
           <Card.Body>
-            <Card.Title>{name}</Card.Title>
+            <Card.Title>Name: {name}</Card.Title>
             <Card.Text>Status: {status}</Card.Text>
             <Card.Text>Origin: {origin}</Card.Text>
             <Card.Text>Episodes: {episode}</Card.Text>
@@ -135,7 +131,8 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App layout">
+      <Logo />
       <Title />
       <SearchBox handleSearchTerm={handleSearch} />
       {hasData && (
