@@ -70,7 +70,7 @@ input {
 }
 
 .mybutton {
-  padding: 0 1rem 0 2rem;
+  padding: 0 1rem 0 1rem;
   height: 64px;
   border-radius: 8px;
   box-shadow: 0 4px 48px 0 rgb(0 0 0 / 20%);

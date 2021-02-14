@@ -3,6 +3,9 @@ import { LocationContainer } from "./Components/LocationContainer";
 import { useState, useEffect } from "react";
 import Logo from "./Components/Logo";
 import Card from "react-bootstrap/Card";
+import { FcLike } from "react-icons/fc";
+import { FcDislike } from "react-icons/fc";
+import { FcQuestions } from "react-icons/fc";
 import "./App.css";
 import axios from "axios";
 let characteresTemp = [];
@@ -66,7 +69,16 @@ const ResidentInfo = ({ name, image, status, origin, episode }) => {
           {<Card.Img variant="top" src={image} />}
           <Card.Body>
             <Card.Title>Name: {name}</Card.Title>
-            <Card.Text>Status: {status}</Card.Text>
+            <Card.Text>
+              {status === "Alive" ? (
+                <FcLike />
+              ) : status === "Dead" ? (
+                <FcDislike />
+              ) : (
+                <FcQuestions />
+              )}{" "}
+              Status: {status}
+            </Card.Text>
             <Card.Text>Origin: {origin}</Card.Text>
             <Card.Text>Episodes: {episode}</Card.Text>
           </Card.Body>
