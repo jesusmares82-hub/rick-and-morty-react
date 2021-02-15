@@ -18,6 +18,9 @@ const LocationInfo = ({ name, type, dimension }) => {
       <h1>{name}</h1>
       <h3>{type}</h3>
       <p>{dimension}</p>
+      <p>
+        <strong>Residents: {residents ? residents.length : "0"}</strong>
+      </p>
     </div>
   );
 };
