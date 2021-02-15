@@ -1,5 +1,6 @@
 import Title from "./Components/Title";
 import { LocationContainer } from "./Components/LocationContainer";
+import { ResidentContainer } from "./Components/ResidentContainer";
 import { useState, useEffect } from "react";
 import Logo from "./Components/Logo";
 import Card from "react-bootstrap/Card";
@@ -7,12 +8,11 @@ import { FcLike } from "react-icons/fc";
 import { FcDislike } from "react-icons/fc";
 import { FcQuestions } from "react-icons/fc";
 import "./App.css";
-import axios from "axios";
+
 let characteresTemp = [];
 let myArrOfCharacter = [];
 
 const LocationInfo = ({ name, type, dimension }) => {
-  //console.log(name);
   return (
     <div className="hero">
       <h1>{name}</h1>
@@ -22,51 +22,12 @@ const LocationInfo = ({ name, type, dimension }) => {
   );
 };
 
-const ResidentContainer = ({ residents, query }) => {
-  //console.log(residents);
-  const [characteres, setCharacteres] = useState([]);
-  const responseOne = "";
-
-  useEffect(() => {
-    if (residents.length > 0) {
-      for (let i = 0; i < residents.length; i++) {
-        if (i >= 10) {
-          break;
-        }
-        console.log("entro al for" + i);
-        axios.get(`${residents[i]}`).then((res) => {
-          //console.log(res.data.name);
-          //setCharacteres(res.data);
-          characteresTemp.push(res.data);
-        });
-      }
-    }
-
-    setCharacteres(characteresTemp);
-    if (characteres.length > 0) {
-      console.log("entro al if characteres");
-      myArrOfCharacter = characteres.map((value) => (
-        <ResidentInfo
-          key={value.id}
-          name={value.name}
-          image={value.image}
-          status={value.status}
-          origin={value.origin.name}
-          episode={value.episode.length}
-        />
-      ));
-    }
-  }, [query]);
-
-  return <div>{characteres && myArrOfCharacter}</div>;
-};
-
 const ResidentInfo = ({ name, image, status, origin, episode }) => {
   return (
     <>
       <div className="gallery">
         <Card style={{ width: "15rem" }}>
-          {<Card.Img variant="top" src={image} />}
+          <Card.Img variant="top" src={image} />
           <Card.Body>
             <Card.Title>Name: {name}</Card.Title>
             <Card.Text>
@@ -96,7 +57,7 @@ const SearchBox = ({ handleSearchTerm }) => {
         value={searchTerm}
         style={{
           width: "20rem",
-          backgroundColor: "#f4f9f9",
+          backgroundColor: "#f4f9f4",
         }}
         onChange={(e) => {
           const value = e.target.value;
@@ -113,28 +74,33 @@ const SearchBox = ({ handleSearchTerm }) => {
   );
 };
 
+const Clear = ({ handleClearTerm }) => {
+  return (
+    <div>
+      <button className="mybutton" onClick={() => handleClearTerm()}>
+        Clear
+      </button>
+    </div>
+  );
+};
+
 function App() {
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [dimension, setDimension] = useState("");
-  const [residents, setResidents] = useState([]);
   const [hasData, setHasData] = useState(false);
   let random = Math.floor(Math.random() * 108);
   const [query, setQuery] = useState(random);
 
   useEffect(() => {
     setHasData(false);
-    LocationContainer(query).then(
-      (res) => {
-        console.log(res.data);
-        setHasData(true);
-        setName(res.data.name);
-        setType(res.data.type);
-        setDimension(res.data.dimension);
-        setResidents(res.data.residents);
-      },
-      (error) => console.error(error)
-    );
+    LocationContainer(query).then((res) => {
+      setHasData(true);
+      setName(res.data.name);
+      setType(res.data.type);
+      setDimension(res.data.dimension);
+      characteresTemp = ResidentContainer(res.data.residents);
+    });
   }, [query]);
 
   const handleSearch = (value, setSearchTerm) => {
@@ -142,11 +108,37 @@ function App() {
     setSearchTerm("");
   };
 
+  const handleClear = (value) => {
+    setQuery("");
+    while (myArrOfCharacter.length > 0) myArrOfCharacter.pop();
+    while (characteresTemp.length > 0) characteresTemp.pop();
+
+    let random = Math.floor(Math.random() * 108);
+    setQuery(random);
+    setHasData(false);
+  };
+
+  useEffect(() => {
+    if (characteresTemp.length > 0) {
+      myArrOfCharacter = characteresTemp.map((value) => (
+        <ResidentInfo
+          key={value.id}
+          name={value.name}
+          image={value.image}
+          status={value.status}
+          origin={value.origin.name}
+          episode={value.episode.length}
+        />
+      ));
+    }
+  });
+
   return (
     <div className="App layout">
       <Logo />
       <Title />
       <SearchBox handleSearchTerm={handleSearch} />
+      <Clear handleClearTerm={handleClear} />
       {hasData && (
         <>
           <LocationInfo
@@ -155,7 +147,7 @@ function App() {
             type={type}
             dimension={dimension}
           />
-          <ResidentContainer residents={residents} query={query} />
+          <div className="pokegallery">{myArrOfCharacter}</div>
         </>
       )}
     </div>
