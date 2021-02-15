@@ -103,7 +103,7 @@ function App() {
       setName(res.data.name);
       setType(res.data.type);
       setDimension(res.data.dimension);
-      setResidents(res.data.residents.length);
+      setResidents(res.data.residents);
       characteresTemp = ResidentContainer(res.data.residents);
     });
   }, [query]);
@@ -151,6 +151,7 @@ function App() {
             name={name}
             type={type}
             dimension={dimension}
+            residents={residents}
           />
           <div className="pokegallery">{myArrOfCharacter}</div>
         </>
