@@ -12,7 +12,7 @@ import "./App.css";
 let characteresTemp = [];
 let myArrOfCharacter = [];
 
-const LocationInfo = ({ name, type, dimension }) => {
+const LocationInfo = ({ name, type, dimension, residents }) => {
   return (
     <div className="hero">
       <h1>{name}</h1>
@@ -91,6 +91,7 @@ function App() {
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [dimension, setDimension] = useState("");
+  const [residents, setResidents] = useState("");
   const [hasData, setHasData] = useState(false);
   let random = Math.floor(Math.random() * 108);
   const [query, setQuery] = useState(random);
@@ -102,6 +103,7 @@ function App() {
       setName(res.data.name);
       setType(res.data.type);
       setDimension(res.data.dimension);
+      setResidents(res.data.residents.length);
       characteresTemp = ResidentContainer(res.data.residents);
     });
   }, [query]);
