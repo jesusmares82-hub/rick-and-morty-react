@@ -8,6 +8,7 @@ import { FcLike } from "react-icons/fc";
 import { FcDislike } from "react-icons/fc";
 import { FcQuestions } from "react-icons/fc";
 import "./App.css";
+import Button from "react-bootstrap/Button";
 
 let characteresTemp = [];
 let myArrOfCharacter = [];
@@ -18,8 +19,9 @@ const LocationInfo = ({ name, type, dimension, residents }) => {
       <h1>{name}</h1>
       <h3>{type}</h3>
       <p>{dimension}</p>
+
       <p>
-        <strong>Residents: {residents ? residents.length : "0"}</strong>
+        <strong>Residents: {residents ? residents.length : "Current"}</strong>
       </p>
     </div>
   );
@@ -68,12 +70,28 @@ const SearchBox = ({ handleSearchTerm }) => {
           setSearchTerm(value.toLowerCase());
         }}
       />
-      <button
+      <Button
+        variant="outline-warning"
         className="mybutton"
         onClick={() => handleSearchTerm(searchTerm, setSearchTerm)}
       >
-        Search
-      </button>
+        Search Location
+      </Button>
+    </div>
+  );
+};
+
+const FixBug = ({ handleBugResident }) => {
+  const [fixBug, setFixBug] = useState("");
+  return (
+    <div>
+      <Button
+        variant="outline-warning"
+        className="mybutton"
+        onClick={() => handleBugResident(fixBug)}
+      >
+        Show Residents
+      </Button>
     </div>
   );
 };
@@ -81,9 +99,13 @@ const SearchBox = ({ handleSearchTerm }) => {
 const Clear = ({ handleClearTerm }) => {
   return (
     <div>
-      <button className="mybutton" onClick={() => handleClearTerm()}>
+      <Button
+        variant="outline-warning"
+        className="mybutton"
+        onClick={() => handleClearTerm()}
+      >
         Clear
-      </button>
+      </Button>
     </div>
   );
 };
@@ -92,7 +114,8 @@ function App() {
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [dimension, setDimension] = useState("");
-  const [residents, setResidents] = useState("");
+  const [residents, setResidents] = useState([]);
+  const [characters, setCharacters] = useState([]);
   const [hasData, setHasData] = useState(false);
   let random = Math.floor(Math.random() * 108);
   const [query, setQuery] = useState(random);
@@ -106,29 +129,17 @@ function App() {
       setDimension(res.data.dimension);
       setResidents(res.data.residents);
       characteresTemp = ResidentContainer(res.data.residents);
+      console.log(characteresTemp);
+      setCharacters(characteresTemp);
     });
   }, [query]);
 
-  const handleSearch = (value, setSearchTerm) => {
-    setQuery(value);
-    setSearchTerm("");
-  };
-
-  const handleClear = (value) => {
-    setQuery("");
-    while (myArrOfCharacter.length > 0) myArrOfCharacter.pop();
-    while (characteresTemp.length > 0) characteresTemp.pop();
-
-    let random = Math.floor(Math.random() * 108);
-    setQuery(random);
-    setHasData(false);
-  };
-
   useEffect(() => {
-    console.log(characteresTemp);
+    console.log(characters);
     console.log(hasData);
-    if (characteresTemp.length > 0) {
-      myArrOfCharacter = characteresTemp.map((value) => (
+    if (characters && hasData) {
+      console.log("Entre al if");
+      myArrOfCharacter = characters.map((value) => (
         <ResidentInfo
           key={value.id}
           name={value.name}
@@ -138,8 +149,27 @@ function App() {
           episode={value.episode.length}
         />
       ));
+      console.log(myArrOfCharacter);
     }
-  }, [hasData]);
+  }, [characters.length, hasData]);
+
+  const handleSearch = (value, setSearchTerm) => {
+    setQuery(value);
+    setSearchTerm("");
+  };
+
+  const handleBug = (value) => {
+    setQuery(value);
+  };
+
+  const handleClear = (value) => {
+    setQuery("");
+    while (myArrOfCharacter.length > 0) myArrOfCharacter.pop();
+    while (characteresTemp.length > 0) characteresTemp.pop();
+    setResidents([]);
+    setCharacters([]);
+    setHasData(false);
+  };
 
   return (
     <div className="App layout">
@@ -147,6 +177,7 @@ function App() {
       <Title />
       <SearchBox handleSearchTerm={handleSearch} />
       <Clear handleClearTerm={handleClear} />
+      <FixBug handleBugResident={handleBug} />
       {hasData && (
         <>
           <LocationInfo
@@ -156,6 +187,10 @@ function App() {
             dimension={dimension}
             residents={residents}
           />
+        </>
+      )}
+      {characters.length > 0 && (
+        <>
           <div className="pokegallery">{myArrOfCharacter}</div>
         </>
       )}
