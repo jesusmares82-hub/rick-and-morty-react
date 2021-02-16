@@ -58,6 +58,7 @@ const SearchBox = ({ handleSearchTerm }) => {
     <div>
       <input
         value={searchTerm}
+        placeholder="Location..."
         style={{
           width: "20rem",
           backgroundColor: "#f4f9f4",
@@ -124,6 +125,8 @@ function App() {
   };
 
   useEffect(() => {
+    console.log(characteresTemp);
+    console.log(hasData);
     if (characteresTemp.length > 0) {
       myArrOfCharacter = characteresTemp.map((value) => (
         <ResidentInfo
@@ -136,7 +139,7 @@ function App() {
         />
       ));
     }
-  });
+  }, [hasData]);
 
   return (
     <div className="App layout">
