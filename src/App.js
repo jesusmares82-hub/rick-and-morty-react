@@ -176,8 +176,8 @@ function App() {
       <Logo />
       <Title />
       <SearchBox handleSearchTerm={handleSearch} />
-      <Clear handleClearTerm={handleClear} />
       <FixBug handleBugResident={handleBug} />
+      <Clear handleClearTerm={handleClear} />
       {hasData && (
         <>
           <LocationInfo
