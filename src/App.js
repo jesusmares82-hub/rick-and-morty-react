@@ -9,6 +9,7 @@ import { FcDislike } from "react-icons/fc";
 import { FcQuestions } from "react-icons/fc";
 import "./App.css";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 
 let characteresTemp = [];
 let myArrOfCharacter = [];
@@ -19,7 +20,6 @@ const LocationInfo = ({ name, type, dimension, residents }) => {
       <h1>{name}</h1>
       <h3>{type}</h3>
       <p>{dimension}</p>
-
       <p>
         <strong>Residents: {residents ? residents.length : "Current"}</strong>
       </p>
@@ -129,16 +129,12 @@ function App() {
       setDimension(res.data.dimension);
       setResidents(res.data.residents);
       characteresTemp = ResidentContainer(res.data.residents);
-      console.log(characteresTemp);
       setCharacters(characteresTemp);
     });
   }, [query]);
 
   useEffect(() => {
-    console.log(characters);
-    console.log(hasData);
     if (characters && hasData) {
-      console.log("Entre al if");
       myArrOfCharacter = characters.map((value) => (
         <ResidentInfo
           key={value.id}
@@ -149,7 +145,6 @@ function App() {
           episode={value.episode.length}
         />
       ));
-      console.log(myArrOfCharacter);
     }
   }, [characters.length, hasData]);
 
@@ -175,6 +170,9 @@ function App() {
     <div className="App layout">
       <Logo />
       <Title />
+      <Alert variant="warning">
+        There is a total of 108 locations sorted by id.!
+      </Alert>
       <SearchBox handleSearchTerm={handleSearch} />
       <FixBug handleBugResident={handleBug} />
       <Clear handleClearTerm={handleClear} />
