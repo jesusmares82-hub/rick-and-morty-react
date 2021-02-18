@@ -1,7 +1,16 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 
-const ResidentInfo = (name, origin, image, status, episodes) => {
+const ResidentInfo = (
+  name,
+  origin,
+  image,
+  status,
+  episodes,
+  nameLocation,
+  type,
+  dimension
+) => {
   return (
     <>
       <Card style={{ width: "18rem" }}>

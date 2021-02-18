@@ -27,7 +27,16 @@ const LocationInfo = ({ name, type, dimension, residents }) => {
   );
 };
 
-const ResidentInfo = ({ name, image, status, origin, episode }) => {
+const ResidentInfo = ({
+  name,
+  image,
+  status,
+  origin,
+  episode,
+  nameLocation,
+  type,
+  dimension,
+}) => {
   return (
     <>
       <div className="gallery">
@@ -43,10 +52,23 @@ const ResidentInfo = ({ name, image, status, origin, episode }) => {
               ) : (
                 <FcQuestions />
               )}{" "}
-              Status: {status}
+              <strong>Status:</strong> {status}
             </Card.Text>
-            <Card.Text>Origin: {origin}</Card.Text>
-            <Card.Text>Episodes: {episode}</Card.Text>
+            <Card.Text>
+              <strong>Origin:</strong> {origin}
+            </Card.Text>
+            <Card.Text>
+              <strong>Episodes:</strong> {episode}
+            </Card.Text>
+            <Card.Text>
+              <strong>Location:</strong> {nameLocation}
+            </Card.Text>
+            <Card.Text>
+              <strong>Type:</strong> {type}
+            </Card.Text>
+            <Card.Text>
+              <strong>Dimension:</strong> {dimension}
+            </Card.Text>
           </Card.Body>
         </Card>
       </div>
@@ -111,10 +133,8 @@ const Clear = ({ handleClearTerm }) => {
 };
 
 function App() {
-  const [name, setName] = useState("");
-  const [type, setType] = useState("");
-  const [dimension, setDimension] = useState("");
   const [residents, setResidents] = useState([]);
+  const [location, setLocation] = useState("");
   const [characters, setCharacters] = useState([]);
   const [hasData, setHasData] = useState(false);
   let random = Math.floor(Math.random() * 108);
@@ -124,9 +144,7 @@ function App() {
     setHasData(false);
     LocationContainer(query).then((res) => {
       setHasData(true);
-      setName(res.data.name);
-      setType(res.data.type);
-      setDimension(res.data.dimension);
+      setLocation(res.data);
       setResidents(res.data.residents);
       characteresTemp = ResidentContainer(res.data.residents);
       setCharacters(characteresTemp);
@@ -138,6 +156,9 @@ function App() {
       myArrOfCharacter = characters.map((value) => (
         <ResidentInfo
           key={value.id}
+          nameLocation={location.name}
+          type={location.type}
+          dimension={location.dimension}
           name={value.name}
           image={value.image}
           status={value.status}
@@ -179,10 +200,10 @@ function App() {
       {hasData && (
         <>
           <LocationInfo
-            key={name}
-            name={name}
-            type={type}
-            dimension={dimension}
+            key={location.name}
+            name={location.name}
+            type={location.type}
+            dimension={location.dimension}
             residents={residents}
           />
         </>
